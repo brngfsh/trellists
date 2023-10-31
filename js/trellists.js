@@ -66,7 +66,7 @@
 
   // Update  list name on change. Already optimized.
   $('[data-testid="list-wrapper"] h2[data-testid="list-name"]').waitUntilExists(function() {
-    $('[data-testid="list-wrapper"] h2[data-testid="list-name"]').bind(function() {
+    $('[data-testid="list-wrapper"] h2[data-testid="list-name"]').bind('DOMSubtreeModified', function() {
       //TODO: this code fired 10 times on list name change and I must be improved.
       var $list = $(this).parent().parent();
       var oldListName = $list.attr('data-list-name');
@@ -76,7 +76,7 @@
       if (listName && listName != oldListName) {
         renderMenu();
         //Remove previous name and store new one.
-        var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-listt");
+        var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-list");
         localStorage.removeItem("trellists-" + oldListName);
         localStorage.setItem("trellists-" + listName, listShowStatus);
       }

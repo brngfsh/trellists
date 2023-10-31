@@ -28,7 +28,6 @@ This extension solves problem of horizontal scrolling and makes easier managemen
 * Hotfix for new trello version
 * Updated manifest from v2 to v3
 * Removed url from permissions
-* Removed deprecated DOMSubtreeModified event
 
 #### 2.8
 * Removed useless 'storage' permission.
