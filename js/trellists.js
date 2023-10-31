@@ -36,14 +36,14 @@
   // Add a placeholder for the list of all list in the page header.
   new MutationSummary({
     queries: [{
-      element: '.list-wrapper'
+      element: '[data-testid="list-wrapper"]'
     }],
     callback: function() {
       if (!$('#trellists').length) {
         $('<ul/>').attr('id', 'trellists').appendTo('.board-header');
       }
       // Restore state of each List.
-      $('.list-wrapper').each(function() {
+      $('[data-testid="list-wrapper"]').each(function() {
         var listName = getListName($(this));
         // There is an empty list (placeholder for new lists) and we should skip it.
         if (listName) {
@@ -65,8 +65,8 @@
 
 
   // Update  list name on change. Already optimized.
-  $('.list-wrapper h2.list-header-name').waitUntilExists(function() {
-    $('.list-wrapper h2.list-header-name').bind('DOMSubtreeModified', function() {
+  $('[data-testid="list-wrapper"] h2[data-testid="list-name"]').waitUntilExists(function() {
+    $('[data-testid="list-wrapper"] h2[data-testid="list-name"]').bind(function() {
       //TODO: this code fired 10 times on list name change and I must be improved.
       var $list = $(this).parent().parent();
       var oldListName = $list.attr('data-list-name');
@@ -76,7 +76,7 @@
       if (listName && listName != oldListName) {
         renderMenu();
         //Remove previous name and store new one.
-        var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-list");
+        var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-listt");
         localStorage.removeItem("trellists-" + oldListName);
         localStorage.setItem("trellists-" + listName, listShowStatus);
       }
@@ -85,7 +85,7 @@
 
   // Get List name.
   function getListName(list) {
-    return list.find('.list-header-name').clone().children().remove().end().text();
+    return list.find('[data-testid="list-name"]').clone().children().remove().end().text();
   }
 
   /**
@@ -99,7 +99,7 @@
     // TODO: store number of hidden and shown tabs in global variable or LocalStorage and update 'All' button depending on those numbers.
     var shownTabs = hiddenTabs = 0;
     // Get all Lists at board except placeholder for new List creation to add them to the Bar.
-    $('#board .list-wrapper').each(function() {
+    $('#board [data-testid="list-wrapper"]').each(function() {
       // Get only List's name without any sub-elements.
       var name = getListName($(this));
 
@@ -166,7 +166,7 @@
         var allButtonPrevStatus = $(this).hasClass('show-all') ? 'show-all' : 'hide-all';
 
         // TODO: think how to avoid code duplication here.
-        $('#board .list-wrapper').each(function() {
+        $('#board [data-testid="list-wrapper"]').each(function() {
           var $list = $(this);
           var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-list");
           var listName = getListName($list);
@@ -189,7 +189,7 @@
       }
       else {
         // List tab was clicked.
-        var $list = $("#board .list-wrapper[data-list-name='" + button +"']");
+        var $list = $('#board [data-testid="list-wrapper"][data-list-name="' + button +'"]');
         var listShowStatus = ($list.hasClass("show-list") ? "show-list" : "hide-list");
         var listName = getListName($list);
         var allTab = $('#trellists li[data-tab-name=all]');
